@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}User Details{% endblock %}
+{% block content %}
+<div class="my-4">
+    <h1>{{ user_obj.first_name }} {{ user_obj.last_name }}</h1>
+    <ul class="list-group mb-3" style="max-width: 500px;">
+        <li class="list-group-item d-flex justify-content-between"><span>Email</span><strong>{{ user_obj.email }}</strong></li>
+        <li class="list-group-item d-flex justify-content-between"><span>Role</span><strong>{{ user_obj.get_role_name }}</strong></li>
+    </ul>
+    <a href="{% url 'ordered_books_by_user' user_obj.id %}" class="btn btn-outline-primary">View borrowed books</a>
+    <a href="{% url 'list_of_users' %}" class="btn btn-outline-secondary">← Back</a>
+</div>
+{% endblock %}

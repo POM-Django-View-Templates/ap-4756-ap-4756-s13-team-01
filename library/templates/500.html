@@ -1,1 +1,9 @@
-<!-- This is a default page for Internal Server Error -->
+{% extends 'base.html' %}
+{% block title %}500 - Server Error{% endblock %}
+{% block content %}
+<div class="my-5 text-center">
+    <h1 class="display-4">500</h1>
+    <p class="lead">Something went wrong on our end. Please try again later</p>
+    <a href="{% url 'list_of_books' %}" class="btn btn-primary">Go to homepage</a>
+</div>
+{% endblock %}
