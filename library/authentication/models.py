@@ -31,13 +31,10 @@ class CustomUserManager(BaseUserManager):
         """
         Create and save a SuperUser with the given email and password.
         """
-        extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('role', 1)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError(('Superuser must have is_staff=True.'))
         if extra_fields.get('is_superuser') is not True:
             raise ValueError(('Superuser must have is_superuser=True.'))
         return self.create_user(email, password, **extra_fields)
@@ -67,15 +64,21 @@ class CustomUser(AbstractBaseUser):
         param is_active: user role, default value False
         type updated_at: bool
     """
-    first_name = models.CharField(max_length=20, default=None)
-    last_name = models.CharField(max_length=20, default=None)
-    middle_name = models.CharField(max_length=20, default=None)
+    first_name = models.CharField(max_length=20, null=True, blank=True, default=None)
+    last_name = models.CharField(max_length=20, null=True, blank=True,default=None)
+    middle_name = models.CharField(max_length=20, null=True, blank=True, default=None)
+
     email = models.CharField(max_length=100, unique=True, default=None)
     password = models.CharField(default=None, max_length=255)
+
     created_at = models.DateTimeField(editable=False, auto_now=datetime.datetime.now())
     updated_at = models.DateTimeField(auto_now=datetime.datetime.now())
+
     role = models.IntegerField(choices=ROLE_CHOICES, default=0)
+
+    is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+
     id = models.AutoField(primary_key=True)
 
     USERNAME_FIELD = 'email'
@@ -95,7 +98,22 @@ class CustomUser(AbstractBaseUser):
         This magic method is redefined to show class and id of CustomUser object.
         :return: class, id
         """
-        return f"{CustomUser.__name__}(id={self.id})"
+        return f"{CustomUser.__name__}(id={self.id}, role={self.get_role_name()})"
+
+    @property
+    def is_staff(self):
+        return self.role == 1 or self.is_superuser
+
+    def has_perm(self, perm, obj=None):
+        if self.is_superuser:
+            return True
+        return self.role == 1 and self.is_active
+
+    def has_module_perms(self, app_label):
+        if self.is_superuser:
+            return True
+        return self.role == 1 and self.is_active
+
 
     @staticmethod
     def get_by_id(user_id):
