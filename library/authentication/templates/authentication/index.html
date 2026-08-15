@@ -5,10 +5,9 @@
     <h1>Welcome to the Library</h1>
     {% if user.is_authenticated %}
         <p>Hello, {{ user.first_name }}!</p>
-        <a href="{% url 'list_of_books' %}" class="btn btn-primary">Browse Books</a>
     {% else %}
-        <a href="{% url 'login' %}" class="btn btn-primary">Log in</a>
-        <a href="{% url 'register' %}" class="btn btn-outline-secondary">Register</a>
+        <h3> We are happy to see you!</h3>
+        <h4> Could you Login or Register to use our Library? </h4>
     {% endif %}
 </div>
 {% endblock %}

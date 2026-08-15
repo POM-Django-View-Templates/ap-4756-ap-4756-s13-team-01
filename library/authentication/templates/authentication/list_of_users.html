@@ -10,7 +10,7 @@
         <tbody>
             {% for u in users %}
             <tr>
-                <td><a href="{% url 'user_details' u.id %}">{{ u.first_name }} {{ u.last_name }}</a></td>
+                <td><a href="{% url 'authentication:user_details' u.id %}">{{ u.first_name }} {{ u.last_name }}</a></td>
                 <td>{{ u.email }}</td>
                 <td>{{ u.get_role_name }}</td>
             </tr>
