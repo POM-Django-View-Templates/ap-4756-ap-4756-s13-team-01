@@ -4,7 +4,8 @@
 <div class="my-4">
     <h1>Register</h1>
     {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
-    <form method="post" action="{% url 'register' %}" class="col-md-6">
+    <form method="POST" action="{% url 'authentication:register' %}" class="col-md-6">
+        {% csrf_token %}
         <div class="mb-3">
             <label class="form-label">First name</label>
             <input type="text" name="first_name" class="form-control" maxlength="20" required>
@@ -26,6 +27,10 @@
             <input type="password" name="password" class="form-control" required>
         </div>
         <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" name="confirm_password" class="form-control" required>
+        </div>
+        <div class="mb-3">
             <label class="form-label">Register as</label>
             <select name="role" class="form-select">
                 <option value="0">Visitor</option>
@@ -33,7 +38,7 @@
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>
-        <a href="{% url 'login' %}" class="btn btn-outline-secondary">Already have an account?</a>
+        <a href="{% url 'authentication:login' %}" class="btn btn-outline-secondary">Already have an account?</a>
     </form>
 </div>
 {% endblock %}

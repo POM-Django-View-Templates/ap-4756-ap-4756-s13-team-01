@@ -2,7 +2,11 @@
 {% block title %}My Orders{% endblock %}
 {% block content %}
 <div class="my-4">
+    {% if request.user.is_staff %}
     <h1>Orders for user #{{ user_id }}</h1>
+    {% else %}
+    <h1>Your Orders</h1>
+    {% endif %}
 
     <table class="table table-striped align-middle">
         <thead>
@@ -18,15 +22,17 @@
             {% for order in orders %}
             <tr>
                 <td><a href="{% url 'book_detail' order.book.id %}">{{ order.book.name }}</a></td>
-                <td>{{ order.created_at, date:"Y-m-d" }}</td>
-                <td>{{ order.plated_end_at, date:"Y-m-d" }}</td>
-                <td>{{ order.end_at, date:"Y-m-d", default:"-" }}</td>
+                <td>{{ order.created_at|date:"Y-m-d" }}</td>
+                <td>{{ order.plated_end_at|date:"Y-m-d" }}</td>
+                <td>{{ order.end_at|date:"Y-m-d"|default:"-" }}</td>
                 <td>
+                {% if request.user.is_staff %}
                     {% if order.end_at %}
                         <span class="badge bg-secondary">Returned</span>
                     {% else %}
                         <span class="badge bg-success">Borrowed</span>
                     {% endif %}
+                {% endif %}
                 </td>
             </tr>
             {% empty %}
@@ -34,5 +40,10 @@
             {% endfor %}
         </tbody>
     </table>
+    {% if request.user.is_staff %}
+    <a href="{% url 'authentication:list_of_users' %}" class="btn btn-outline-secondary">← Back</a>
+    {% else %}
+    <a href="{% url 'authentication:profile' %}" class="btn btn-outline-secondary">← Back</a>
+    {% endif %}
 </div>
 {% endblock %}

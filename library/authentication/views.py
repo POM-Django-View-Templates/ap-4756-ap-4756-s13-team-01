@@ -48,7 +48,7 @@ def register_view(request):
         login(request, new_user)
 
         messages.success(request, 'Registration has been successful!')
-        return redirect('authentication:profile')
+        return redirect('authentication:index_auth')
 
     return render(request, 'authentication/register.html')
 
@@ -70,7 +70,7 @@ def login_view(request):
             login(request, user)
 
             messages.success(request, f'Congratulation, {user.email}!')
-            return redirect('authentication:profile')
+            return redirect('authentication:index_auth')
         else:
             messages.error(request, 'Invalid email or password.')
 
@@ -88,7 +88,7 @@ def logout_view(request):
 
 @login_required
 def profile_view(request):
-    context = {'user': request.user}
+    context = {'user_obj': request.user}
     return render(request, 'authentication/profile.html', context=context)
 
 
@@ -115,6 +115,6 @@ def user_details_view(request, user_id):
 
     user = get_object_or_404(CustomUser, pk=user_id)
 
-    context = {'user': user}
+    context = {'user_obj': user}
 
     return render(request, 'authentication/user_details.html', context=context)
