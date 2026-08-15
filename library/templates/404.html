@@ -1,1 +1,9 @@
-<!-- This is a default page for Not Found --> 
+{% extends 'base.html' %}
+{% block title %}404 - Not Found{% endblock %}
+{% block content %}
+<div class="my-5 text-center">
+    <h1 class="display-4">404</h1>
+    <p class="lead">Page not found</p>
+    <a href="{% url 'list_of_books' %}" class="btn btn-primary">Go to homepage</a>
+</div>
+{% endblock %}

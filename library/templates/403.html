@@ -1,1 +1,9 @@
-<!-- This is a default page for Forbidden --> 
+{% extends 'base.html' %}
+{% block title %}403 - Forbidden{% endblock %}
+{% block content %}
+<div class="my-5 text-center">
+    <h1 class="display-4">403</h1>
+    <p class="lead">You don't have permission to access this page</p>
+    <a href="{% url 'list_of_books' %}" class="btn btn-primary">Go to homepage</a>
+</div>
+{% endblock %}
