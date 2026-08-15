@@ -93,7 +93,7 @@ def profile_view(request):
 
 
 @login_required
-@permission_required('is_staff')
+@permission_required('is_staff', raise_exception=True)
 def list_of_users_view(request):
     
     users = CustomUser.objects.all()
@@ -104,7 +104,7 @@ def list_of_users_view(request):
 
 
 @login_required
-@permission_required('is_staff')
+@permission_required('is_staff', raise_exception=True)
 def user_details_view(request, user_id):
 
     user = get_object_or_404(CustomUser, pk=user_id)
@@ -112,3 +112,15 @@ def user_details_view(request, user_id):
     context = {'user_obj': user}
 
     return render(request, 'authentication/user_details.html', context=context)
+
+def bad_request(request, exception=None):
+    return render(request, '400.html', status=400)
+
+def permission_denied(request, exception=None):
+    return render(request, '403.html', status=403)
+
+def page_not_found(request, exception=None):
+    return render(request, '404.html', status=404)
+
+def server_error(request):
+    return render(request, '500.html', status=500)

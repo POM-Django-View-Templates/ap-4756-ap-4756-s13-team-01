@@ -15,11 +15,11 @@
         </li>
         <li class="list-group-item d-flex justify-content-between">
             <span>Borrowed</span>
-            <strong>{{ order.created_at, date:"Y-m-d" }}</strong>
+            <strong>{{ order.created_at|date:"Y-m-d" }}</strong>
         </li>
         <li class="list-group-item d-flex justify-content-between">
             <span>Planned return</span>
-            <strong>{{ order.plated_end_at, date:"Y-m-d" }}</strong>
+            <strong>{{ order.plated_end_at|date:"Y-m-d" }}</strong>
         </li>
     </ul>
 
@@ -28,6 +28,7 @@
         <a href="{% url 'list_of_orders' %}" class="btn btn-outline-secondary">← Back to all orders</a>
     {% else %}
         <form method="post" action="{% url 'close_an_order' order.id %}">
+            {% csrf_token %}
             <button type="submit" class="btn btn-danger">Confirm</button>
             <a href="{% url 'list_of_orders' %}" class="btn btn-outline-secondary">Cancel</a>
         </form>

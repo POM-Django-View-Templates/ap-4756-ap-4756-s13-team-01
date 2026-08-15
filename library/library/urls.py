@@ -23,3 +23,8 @@ urlpatterns = [
     path('authors/', include('author.urls')),
     path('', include('authentication.urls'))
 ]
+
+handler400 = 'authentication.views.bad_request'
+handler403 = 'authentication.views.permission_denied'
+handler404 = 'authentication.views.page_not_found'
+handler500 = 'authentication.views.server_error'
