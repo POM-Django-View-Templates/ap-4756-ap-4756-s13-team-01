@@ -3,7 +3,9 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center my-4">
     <h1>Books</h1>
+    {% if request.user.is_staff %}
     <a href="{% url 'create_a_book' %}" class="btn btn-primary">+ Add book</a>
+    {% endif %}
 </div>
 
 <form method="get" class="row g-2 mb-4">
