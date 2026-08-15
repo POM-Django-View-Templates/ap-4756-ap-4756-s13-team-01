@@ -104,7 +104,7 @@ class CustomUser(AbstractBaseUser):
     def is_staff(self):
         return self.role == 1 or self.is_superuser
 
-    def has_perm(self, perm, obj=None):
+    def has_perms(self, perm, obj=None):
         if self.is_superuser:
             return True
         return self.role == 1 and self.is_active

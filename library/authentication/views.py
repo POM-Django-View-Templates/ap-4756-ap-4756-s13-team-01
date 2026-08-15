@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 from authentication.models import CustomUser
 
@@ -93,11 +93,8 @@ def profile_view(request):
 
 
 @login_required
+@permission_required('is_staff')
 def list_of_users_view(request):
-
-    if not request.user.is_staff:
-        messages.error(request, "Not allowed")
-        return render(request, '403.html', status=403)
     
     users = CustomUser.objects.all()
 
@@ -107,11 +104,8 @@ def list_of_users_view(request):
 
 
 @login_required
+@permission_required('is_staff')
 def user_details_view(request, user_id):
-
-    if not request.user.is_staff:
-        messages.error(request, "Not allowed")
-        return render(request, '403.html', status=403)
 
     user = get_object_or_404(CustomUser, pk=user_id)
 
