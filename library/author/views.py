@@ -20,11 +20,7 @@ def list_of_authors(request):
 
 @login_required
 @permission_required('is_staff')
-def create_an_author(request):
-    if not request.user.is_staff:
-        messages.error(request, "Not allowed")
-        return render(request, '403.html', status=403)
-
+def create_an_author(request): 
     if request.method == 'POST':
         name = request.POST.get('name','').strip()
         surname = request.POST.get('surname', '').strip()

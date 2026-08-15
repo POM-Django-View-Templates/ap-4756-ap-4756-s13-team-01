@@ -9,19 +9,14 @@
     {% endif %}
 
     <form method="post" action="{% url 'create_an_order' %}" class="col-md-6">
+        {% csrf_token %}
         <div class="mb-3">
             <label class="form-label">Book</label>
             <select name="book" class="form-select" required>
-                {% for book in books %}
-                    <option value="{{ book.id }}">{{ book.name }} ({{ book.count }} available)</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">User</label>
-            <select name="user" class="form-select" required>
-                {% for u in users %}
-                    <option value="{{ u.id }}">{{ u.email }}</option>
+                {% for b in books %}
+                    <option value="{{ b.id }}" {% if request.GET.book == b.id|stringformat:"s" %}selected{% endif %}>
+                        {{ b.name }} ({{ b.count }} available)
+                    </option>
                 {% endfor %}
             </select>
         </div>
