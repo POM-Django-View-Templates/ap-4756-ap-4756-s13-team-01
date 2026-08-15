@@ -24,9 +24,9 @@
             <tr>
                 <td><a href="{% url 'book_detail' order.book.id %}">{{ order.book.name }}</a></td>
                 <td>{{ order.user.email }}</td>
-                <td>{{ order.created_at, date:"Y-m-d" }}</td>
-                <td>{{ order.plated_end_at, date:"Y-m-d" }}</td>
-                <td>{{ order.end_at, date:"Y-m-d", default:"-" }}</td>
+                <td>{{ order.created_at|date:"Y-m-d" }}</td>
+                <td>{{ order.plated_end_at|date:"Y-m-d" }}</td>
+                <td>{{ order.end_at|date:"Y-m-d"|default:"-" }}</td>
                 <td>
                     {% if order.end_at %}
                         <span class="badge bg-secondary">Returned</span>
@@ -36,7 +36,7 @@
                 </td>
                 <td>
                     {% if not order.end_at %}
-                        <a href="{% url 'close_order' order.id %}" class="btn btn-sm btn-outline-danger">Close</a>
+                        <a href="{% url 'close_an_order' order.id %}" class="btn btn-sm btn-outline-danger">Close</a>
                     {% endif %}
                 </td>
             </tr>

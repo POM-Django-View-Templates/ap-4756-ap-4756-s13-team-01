@@ -27,7 +27,7 @@
         <div class="alert alert-secondary">This order is already closed.</div>
         <a href="{% url 'list_of_orders' %}" class="btn btn-outline-secondary">← Back to all orders</a>
     {% else %}
-        <form method="post" action="{% url 'close_order' order.id %}">
+        <form method="post" action="{% url 'close_an_order' order.id %}">
             <button type="submit" class="btn btn-danger">Confirm</button>
             <a href="{% url 'list_of_orders' %}" class="btn btn-outline-secondary">Cancel</a>
         </form>

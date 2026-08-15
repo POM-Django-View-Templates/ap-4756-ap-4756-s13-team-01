@@ -42,6 +42,18 @@
                         <li class="nav-item">
                             <a href="{% url 'list_of_books' %}" class="nav-link fw-bold"> Browse Books </a>
                         </li>
+                        {% if request.user.is_staff %}
+                        <li class="nav-item">
+                            <a href="{% url 'list_of_orders' %}" class="nav-link fw-bold"> Browse Orders </a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a href="{% url 'create_an_order' %}" class="nav-link fw-bold"> Borrow a Book </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'user_orders' user_id=request.user.id %}" class="nav-link fw-bold"> My Orders </a>
+                        </li>
+                        {% endif %}
                         <li class="nav-item">
                             <a href="{% url 'authentication:profile' %}" class="nav-link fw-bold">
                                 {{ request.user.first_name|default:request.user.email }}
