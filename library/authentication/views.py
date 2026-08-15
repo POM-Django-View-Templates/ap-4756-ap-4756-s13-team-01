@@ -93,7 +93,7 @@ def profile_view(request):
 
 
 @login_required
-@permission_required('is_staff')
+@permission_required('is_staff', raise_exception=True)
 def list_of_users_view(request):
     
     users = CustomUser.objects.all()
@@ -104,7 +104,7 @@ def list_of_users_view(request):
 
 
 @login_required
-@permission_required('is_staff')
+@permission_required('is_staff', raise_exception=True)
 def user_details_view(request, user_id):
 
     user = get_object_or_404(CustomUser, pk=user_id)

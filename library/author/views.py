@@ -6,6 +6,7 @@ from author.models import Author
 app_name = 'author'
 
 @login_required
+@permission_required('is_staff', raise_exception=True)
 def list_of_authors(request):
     authors = Author.objects.all()
     name = request.GET.get('name')
@@ -19,7 +20,7 @@ def list_of_authors(request):
 
 
 @login_required
-@permission_required('is_staff')
+@permission_required('is_staff', raise_exception=True)
 def create_an_author(request): 
     if request.method == 'POST':
         name = request.POST.get('name','').strip()
@@ -62,8 +63,14 @@ def author_detail(request, author_id):
 
 
 @login_required
-@permission_required('is_staff')
+@permission_required('is_staff', raise_exception=True)
 def delete_an_author(request, author_id):
+    author = get_object_or_404(Author, pk=author_id)
+
+    if author.books.exists():
+        messages.error(request, "Cannot delete an author attached to a book.")
+        return redirect('author:author_detail', author_id=author.id)
+
     if Author.delete_by_id(author_id):
         messages.success(request, "The author successfully deleted!")
     else:
@@ -72,7 +79,7 @@ def delete_an_author(request, author_id):
 
 
 @login_required
-@permission_required('is_staff')
+@permission_required('is_staff', raise_exception=True)
 def update_an_author(request, author_id):
 
     author = get_object_or_404(Author, pk=author_id)

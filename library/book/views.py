@@ -1,7 +1,6 @@
 # Create your views here.
 from django.shortcuts import render, redirect
 from book.models import Book
-from order.models import Order
 from author.models import Author
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import Http404
@@ -14,7 +13,7 @@ def book_detail(request, book_id):
     return render(request, 'book/book_detail.html', {'book': book})
 
 @login_required
-@permission_required('is_staff')
+@permission_required('is_staff', raise_exception=True)
 def create_a_book(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -42,12 +41,11 @@ def list_of_books(request):
     if name:
         books = books.filter(name__icontains=name)
     if author:
-        books = books.filter(author__icontains=author)
+        books = books.filter(authors__surname__icontains=author)
 
     return render(request, 'book/list_of_books.html', {'books': books})
 
 @login_required
-@permission_required('is_staff')
+@permission_required('is_staff', raise_exception=True)
 def ordered_books_by_user(request, user_id):
-    orders = Order.objects.filter(user_id=user_id)
-    return render(request, 'book/ordered_books_by_user.html', {'orders': orders})
+    return redirect(f"/orders/?user={user_id}")

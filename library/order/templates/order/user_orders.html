@@ -26,13 +26,11 @@
                 <td>{{ order.plated_end_at|date:"Y-m-d" }}</td>
                 <td>{{ order.end_at|date:"Y-m-d"|default:"-" }}</td>
                 <td>
-                {% if request.user.is_staff %}
                     {% if order.end_at %}
                         <span class="badge bg-secondary">Returned</span>
                     {% else %}
                         <span class="badge bg-success">Borrowed</span>
                     {% endif %}
-                {% endif %}
                 </td>
             </tr>
             {% empty %}
