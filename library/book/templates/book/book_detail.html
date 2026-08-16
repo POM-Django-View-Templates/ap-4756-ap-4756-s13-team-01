@@ -12,14 +12,6 @@
         </li>
     </ul>
 
-    {% if not request.user.is_staff %}
-        {% if book.count > 0 %}
-            <a href="{% url 'create_an_order' %}?book={{ book.id }}" class="btn btn-success mb-3">Borrow this book</a>
-        {% else %}
-            <p class="text-muted mb-3">No copies available.</p>
-        {% endif %}
-    {% endif %}
-
     <h5>Authors</h5>
     <ul>
         {% for author in book.authors.all %}
@@ -28,6 +20,14 @@
             <li class="text-muted">No authors listed.</li>
         {% endfor %}
     </ul>
+
+    {% if not request.user.is_staff %}
+        {% if book.count > 0 %}
+            <a href="{% url 'create_an_order' %}?book={{ book.id }}" class="btn btn-success">Borrow this book</a>
+        {% else %}
+            <p class="text-muted mb-3">No copies available.</p>
+        {% endif %}
+    {% endif %}
 
     <a href="{% url 'list_of_books' %}" class="btn btn-outline-secondary">← Back</a>
 </div>
