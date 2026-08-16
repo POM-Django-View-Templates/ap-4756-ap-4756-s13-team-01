@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 
 from authentication.models import CustomUser
@@ -90,6 +90,60 @@ def logout_view(request):
 def profile_view(request):
     context = {'user_obj': request.user}
     return render(request, 'authentication/profile.html', context=context)
+
+
+@login_required
+def update_profile(request, user_id):
+
+    user = get_object_or_404(CustomUser, pk=user_id)
+
+    try:
+        if user != request.user:
+            raise Exception
+
+        if request.method == 'POST':
+
+            user.first_name = request.POST.get('first_name', '').strip()
+            user.middle_name = request.POST.get('middle_name', '').strip()
+            user.last_name = request.POST.get('last_name', '').strip()
+            password = request.POST.get('password', '').strip()
+
+            if not user.first_name:
+                messages.error(request, "The first_name is must be required")
+            elif len(user.first_name) > 20:
+                messages.error(request, "The first_name of a user must contain fewer than 20 characters.")
+
+            if not user.middle_name:
+                messages.error(request, "The middle_name is must be required")
+            elif len(user.middle_name) > 20:
+                messages.error(request, "The middle_name of a user must contain fewer than 20 characters.")
+
+            if not user.last_name:
+                messages.error(request, "The last_name is must be required")
+            elif len(user.last_name) > 20:
+                messages.error(request, "The last_name of a user must contain fewer than 20 characters.")
+
+            if not password or not password.strip():
+                password = None
+
+            updated_user = user.update(first_name=user.first_name, middle_name=user.middle_name, last_name=user.last_name, password=password)
+
+            if password and updated_user:
+                user.refresh_from_db()
+                update_session_auth_hash(request, updated_user)
+        else:
+            context = {'user':user}
+            return render(request,'authentication/update_profile.html', context=context)
+
+    except Exception:
+        messages.error(request, "Sorry, something went wrong.")
+    else:
+        messages.success(request, "The user successfully updated!")
+        return redirect('authentication:profile')
+
+    context = {'user':user}
+
+    return render(request,'authentication/update_profile.html', context=context)
 
 
 @login_required
