@@ -228,13 +228,14 @@ class CustomUser(AbstractBaseUser):
             user_to_update.last_name = last_name
         if middle_name != None and len(middle_name) <= 20:
             user_to_update.middle_name = middle_name
-        if password != None:
-            user_to_update.password = password
+        if password is not None and password.strip():
+            user_to_update.set_password(password)
         if role != None:
             user_to_update.role = role
         if is_active != None:
             user_to_update.is_active = is_active
         user_to_update.save()
+        return user_to_update
 
     @staticmethod
     def get_all():

@@ -35,8 +35,6 @@
                         <li class="nav-item">
                             <a href="{% url 'authentication:list_of_users' %}" class="nav-link fw-bold"> Browse Users </a>
                         </li>
-                        {% endif %}
-                        {% if request.user.is_staff %}
                         <li class="nav-item">
                             <a href="{% url 'author:list_of_authors' %}" class="nav-link fw-bold"> Browse Authors </a>
                         </li>
